@@ -1,0 +1,49 @@
+# Shopify-Data-Science-Challenge
+
+# Question 2: 
+For this question you’ll need to use SQL. Follow this link to access the data set required for the challenge. Please use queries to answer the following questions. Paste your queries along with your final numerical answers below.
+
+# How many orders were shipped by Speedy Express in total?
+
+# Solution:
+
+SELECT Count(OrderID) FROM Orders 
+INNER Join Shippers on Orders.ShipperID=Shippers.ShipperID 
+where ShipperName='Speedy Express';
+
+#Answer =54
+
+# What is the last name of the employee with the most orders?
+
+# Solution:
+
+SELECT Count(*) as Count_of_Orders, LastName 
+FROM Orders 
+Inner Join Employees 
+on Orders.EmployeeID=Employees.EmployeeID
+Group by LastName
+Order by Count(*) DESC;
+
+# Answer=40
+
+# What product was ordered the most by customers in Germany?
+
+# Solution
+
+SELECT ProductName
+	FROM (
+		SELECT TOP 1 ProductID, SUM(Quantity)
+		FROM OrderDetails AS odt, Orders AS ord, Customers AS cus
+		WHERE odt.OrderID=ord.OrderID 
+		AND cus.CustomerID=ord.CustomerID 
+		AND cus.Country='Germany'
+		GROUP BY ProductID
+		ORDER BY SUM(Quantity) DESC
+		) AS top_product, Products AS prd
+	WHERE top_product.ProductID= prd.ProductID;
+  
+# Answer-Boston Crab Meat with a Quantity=160
+
+
+
+
